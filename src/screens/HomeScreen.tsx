@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -14,7 +14,7 @@ import BannerCard from '../components/atom/Banner';
 import RecommendationSection from '../components/molecules/ReccomendationSection';
 import BottomNav from '../components/molecules/BottomNav';
 
-const Spacer = ({ height }) => <View style={{ height }} />;
+const Spacer = ({height}) => <View style={{height}} />;
 
 const HomeScreen = () => {
   const [activeTab, setActiveTab] = useState('home'); // tab aktif
