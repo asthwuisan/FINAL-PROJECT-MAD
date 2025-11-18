@@ -8,27 +8,15 @@ import {
   ScrollView,
 } from 'react-native';
 
-const SignUpHeader = ({
-  navigation,
-  title,
-}: {
-  navigation: any;
-  title: string;
-}) => (
+const SignInHeader = ({title}: {navigation: any; title: string}) => (
   <View style={headerStyles.headerContainer}>
-    <TouchableOpacity
-      onPress={() => navigation.goBack()}
-      style={headerStyles.backButton}>
-      <Text style={headerStyles.backText}>{'.. Kembali'}</Text>
-    </TouchableOpacity>
-
     <Text style={headerStyles.headerTitle}>{title}</Text>
 
     <View style={headerStyles.placeholder} />
   </View>
 );
 
-export default SignUpHeader;
+export default SignInHeader;
 
 const headerStyles = StyleSheet.create({
   headerContainer: {

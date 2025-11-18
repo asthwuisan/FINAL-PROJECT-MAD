@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import CustomHeader from '../components/molecules/Header/HSignUp';
+import SignUpHeader from '../components/molecules/Header/HSignUp';
 import {
   View,
   Text,
@@ -18,7 +18,7 @@ export default function SignUpScreen({navigation}: {navigation: any}) {
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-      <CustomHeader navigation={navigation} title="Daftar" />
+      <SignUpHeader navigation={navigation} title="Daftar" />
 
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.label}>Nama lengkap</Text>
