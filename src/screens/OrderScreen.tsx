@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -12,7 +12,7 @@ import SearchBar from '../components/molecules/SearchBar';
 import OrderBox from '../components/molecules/OrderBox';
 import BottomNav from '../components/molecules/BottomNav';
 
-const Spacer = ({ height }) => <View style={{ height }} />;
+const Spacer = ({height}) => <View style={{height}} />;
 
 const OrderScreen = () => {
   const [activeTab, setActiveTab] = useState('OrderScreen');
