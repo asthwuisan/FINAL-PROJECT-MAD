@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import { OrderCardProps } from '../molecules/OrderCard';
+import React, {useState} from 'react';
+import {View, StyleSheet, ScrollView} from 'react-native';
+import {OrderCardProps} from '../molecules/OrderCard';
 import ListItemCard from '../molecules/ListItemCard';
 import BottomNav from '../molecules/BottomNav';
 import Header from '../molecules/Header';
