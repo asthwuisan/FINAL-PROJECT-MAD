@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
 export interface OrderCardProps {
   image: any;
@@ -13,7 +13,7 @@ export interface OrderCardProps {
   onFavoriteToggle?: () => void;
 }
 
-const HelpBadge = ({ children }: { children: React.ReactNode }) => (
+const HelpBadge = ({children}: {children: React.ReactNode}) => (
   <View style={styles.badgeContainer}>
     <Text style={styles.badgeText}>{children}</Text>
   </View>
