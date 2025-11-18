@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 
 const categories = [
-  { name: 'Help Rumah', source: require('../../assets/HelpRumah.png') },
-  { name: 'Help Antar', source: require('../../assets/HelpAntar.png') },
-  { name: 'Help Pintar', source: require('../../assets/HelpPintar.png') },
-  { name: 'Help Tekno', source: require('../../assets/HelpTekno.png') },
+  {name: 'Help Rumah', source: require('../../assets/HelpRumah.png')},
+  {name: 'Help Antar', source: require('../../assets/HelpAntar.png')},
+  {name: 'Help Pintar', source: require('../../assets/HelpPintar.png')},
+  {name: 'Help Tekno', source: require('../../assets/HelpTekno.png')},
 ];
 
 const Category = () => {
