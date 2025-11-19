@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 
-export interface OrderCardProps {
+export interface PaymentCardProps {
   image: any;
   name: string;
   role: string;
@@ -10,7 +10,6 @@ export interface OrderCardProps {
   price: string;
   date: string;
   isFavorite: boolean;
-  onFavoriteToggle?: () => void;
 }
 
 const HelpBadge = ({children}: {children: React.ReactNode}) => (
@@ -19,40 +18,14 @@ const HelpBadge = ({children}: {children: React.ReactNode}) => (
   </View>
 );
 
-const HeartIcon = ({
-  isFavorite,
-  onPress,
-}: {
-  isFavorite: boolean;
-  onPress?: () => void;
-}) => (
-  <TouchableOpacity onPress={onPress} style={styles.heartIconContainer}>
-    <Image
-      // Pilih gambar berdasarkan status isFavorite
-      source={
-        isFavorite
-          ? require('../../assets/heart.png') // Ganti dengan gambar ikon favorit Anda
-          : require('../../assets/heart.png')
-      }
-      style={[
-        styles.heartIcon,
-        // Terapkan gaya berbeda berdasarkan status isFavorite
-        isFavorite ? styles.heartIconFavorite : styles.heartIconNotFavorite,
-      ]}
-    />
-  </TouchableOpacity>
-);
-
-export const OrderCard = ({
+export const PaymentCard = ({
   name,
   role,
   tag,
   location,
   price,
   date,
-  isFavorite,
-  onFavoriteToggle,
-}: OrderCardProps) => {
+}: PaymentCardProps) => {
   return (
     <View style={styles.cardContainer}>
       <View style={styles.contentContainer}>
@@ -72,14 +45,13 @@ export const OrderCard = ({
             <Text style={styles.location}>{location}</Text>
             <Text style={styles.date}>{date}</Text>
           </View>
-          <HeartIcon isFavorite={isFavorite} onPress={onFavoriteToggle} />
         </View>
       </View>
     </View>
   );
 };
 
-export default OrderCard;
+export default PaymentCard;
 
 const styles = StyleSheet.create({
   cardContainer: {

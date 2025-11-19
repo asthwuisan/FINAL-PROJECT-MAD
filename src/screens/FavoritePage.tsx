@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
-import {OrderCardProps} from '../molecules/OrderCard';
-import ListItemCard from '../molecules/ListItemCard';
-import BottomNav from '../molecules/BottomNav';
-import Header from '../molecules/Header';
+import {OrderCardProps} from '../components/molecules/OrderCard';
+import ListItemCard from '../components/molecules/OrderCard';
+import BottomNav from '../components/molecules/BottomNav';
+import Header from '../components/molecules/Header';
 
 interface ItemData extends Omit<OrderCardProps, 'onFavoriteToggle' | 'id'> {
   id: number;
@@ -12,7 +12,7 @@ interface ItemData extends Omit<OrderCardProps, 'onFavoriteToggle' | 'id'> {
 const initialItems: ItemData[] = [
   {
     id: 1,
-    image: require('../assets/teknisi.png'),
+    image: require('../assets/Teknisi.png'),
     name: 'Andi Yudho ',
     role: 'Teknisi AC & Kulkas',
     tag: 'Help Rumah',
@@ -23,7 +23,7 @@ const initialItems: ItemData[] = [
   },
   {
     id: 2,
-    image: require('../assets/kurir.png'),
+    image: require('../assets/Kurir.png'),
     name: 'Aditya Rahman',
     role: 'Kurir Antar Barang',
     tag: 'Help Antar',
