@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, TouchableOpacity, Image, Text, StyleSheet} from 'react-native';
 
-const BottomNav = ({activeTab, onChangeTab}) => {
+const BottomNav = ({activeTab, onChangeTab, navigation}) => {
   const menus = [
     {key: 'home', label: 'Beranda', icon: require('../../assets/home.png')},
     {key: 'pesan', label: 'Pesan', icon: require('../../assets/order.png')},
@@ -22,7 +22,10 @@ const BottomNav = ({activeTab, onChangeTab}) => {
         return (
           <TouchableOpacity
             key={item.key}
-            onPress={() => onChangeTab(item.key)}
+            onPress={() => {
+              onChangeTab(item.key);
+              navigation.navigate(item.key);
+            }}
             style={styles.menuItem}>
             <Image
               source={item.icon}

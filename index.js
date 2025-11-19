@@ -3,7 +3,7 @@
  */
 
 import {AppRegistry} from 'react-native';
-import PaymentPage from './src/screens/PaymentPage';
+import App from './App';
 import {name as appName} from './app.json';
 
-AppRegistry.registerComponent(appName, () => PaymentPage);
+AppRegistry.registerComponent(appName, () => App);
