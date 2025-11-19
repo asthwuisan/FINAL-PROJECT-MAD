@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {
   View,
   Text,
-  TextInput,
+  TextInput as Input,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
@@ -15,7 +15,6 @@ export default function SignInScreen({navigation}: {navigation: any}) {
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-      {/* header */}
       <SignInHeader
         navigation={navigation}
         title="Daftar atau masuk untuk melanjutkan Hanya butuh waktu satu menit"
@@ -23,7 +22,7 @@ export default function SignInScreen({navigation}: {navigation: any}) {
 
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.label}>Email</Text>
-        <TextInput
+        <Input
           style={styles.input}
           placeholder="Contoh : helpyu@gmail.com"
           value={email}
@@ -31,7 +30,7 @@ export default function SignInScreen({navigation}: {navigation: any}) {
         />
 
         <Text style={styles.label}>Kata Sandi</Text>
-        <TextInput
+        <Input
           style={styles.input}
           placeholder="Contoh : #Sandi123"
           secureTextEntry
