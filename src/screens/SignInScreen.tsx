@@ -40,7 +40,7 @@ export default function SignInScreen({navigation}: {navigation: any}) {
 
         <TouchableOpacity
           style={styles.btn}
-          onPress={() => navigation.navigate('HomeScreen')}>
+          onPress={() => navigation.navigate('MainTabs')}>
           <Text style={styles.btnText}>Masuk</Text>
         </TouchableOpacity>
 

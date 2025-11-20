@@ -10,13 +10,10 @@ import {
 import Header2 from '../components/molecules/Header2';
 import SearchBar from '../components/molecules/SearchBar';
 import OrderBox from '../components/molecules/OrderBox';
-import BottomNav from '../components/molecules/BottomNav';
 
 const Spacer = ({height}) => <View style={{height}} />;
 
-const OrderScreen = () => {
-  const [activeTab, setActiveTab] = useState('OrderScreen');
-
+const OrderScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#FAFAFA" />
@@ -69,8 +66,6 @@ const OrderScreen = () => {
           <Spacer height={25} />
         </View>
       </ScrollView>
-
-      <BottomNav activeTab={activeTab} onChangeTab={setActiveTab} />
     </SafeAreaView>
   );
 };
