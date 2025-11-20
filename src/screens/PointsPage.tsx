@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, ScrollView, StyleSheet, SafeAreaView, Text } from 'react-native';
-import PointHeader from '../components/PointHeader';
-import PointHistoryItem from '../components/PointHistoryItem';
+import {View, ScrollView, StyleSheet, SafeAreaView, Text} from 'react-native';
+import PoinHeader from '../components/molecules/PoinHeader';
+import PointHistoryItem from '../components/molecules/PointHistoryItem';
 
 // Definisikan tipe data untuk riwayat
 interface HistoryData {
@@ -42,7 +42,7 @@ const historyData: HistoryData[] = [
   // Anda bisa menambahkan data lain di sini
 ];
 
-const PointsPage: React.FC = () => {
+const PointsPage: React.FC = ({navigation}) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.container}>

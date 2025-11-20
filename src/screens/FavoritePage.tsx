@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
+import {View, StyleSheet, ScrollView, Image} from 'react-native';
 import {OrderCardProps} from '../components/molecules/OrderCard';
 import ListItemCard from '../components/molecules/OrderCard';
-import BottomNav from '../components/molecules/BottomNav';
 import Header from '../components/molecules/Header';
 
 interface ItemData extends Omit<OrderCardProps, 'onFavoriteToggle' | 'id'> {
@@ -34,7 +33,7 @@ const initialItems: ItemData[] = [
   },
 ];
 
-const FavoritePage = () => {
+const FavoritePage = ({navigation}) => {
   const [favoriteItems, setFavoriteItems] = useState(initialItems);
 
   const handleRemoveFavorite = (itemId: number) => {
@@ -57,7 +56,6 @@ const FavoritePage = () => {
           ))}
         </View>
       </ScrollView>
-      <BottomNav active="Favorit" />
     </View>
   );
 };

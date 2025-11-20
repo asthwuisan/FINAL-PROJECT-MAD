@@ -1,10 +1,10 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
+import {TouchableOpacity, Text, StyleSheet, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface SettingsListItemProps {
   label: string;
-  icon: string;       // icon name seperti "person-circle-outline"
+  icon: string; // icon name seperti "person-circle-outline"
   onPress?: () => void;
 }
 
