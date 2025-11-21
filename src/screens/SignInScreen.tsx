@@ -38,7 +38,9 @@ export default function SignInScreen({navigation}: {navigation: any}) {
           onChangeText={setPassword}
         />
 
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate('MainTabs')}>
           <Text style={styles.btnText}>Masuk</Text>
         </TouchableOpacity>
 
