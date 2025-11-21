@@ -34,10 +34,6 @@ const PaymentOption = ({
   </TouchableOpacity>
 );
 
-// --- Komponen Utama: PaymentPage ---
-
-// Kita tidak membutuhkan semua props OrderCard untuk halaman pembayaran,
-// tetapi kita akan memasukkan data teknisi sebagai props.
 export interface PaymentPageProps {
   technicianName: string;
   technicianRole: string;
