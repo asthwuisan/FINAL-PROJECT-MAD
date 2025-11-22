@@ -1,12 +1,10 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Image} from 'react-native';
 
-// Import Screens
-import SplashScreen from './src/screens/SplashScreen';
-import OnboardingScreen from './src/screens/OnboardingScreen';
+// Screens
 import SignInScreen from './src/screens/SignInScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import HomeScreen from './src/screens/HomeScreen';
@@ -14,14 +12,12 @@ import OrderScreen from './src/screens/OrderScreen';
 import FavoritePage from './src/screens/FavoritePage';
 import PointsPage from './src/screens/PointsPage';
 import ProfileSettingsPage from './src/screens/ProfileSettingsPage';
+import PaymentPage from './src/screens/PaymentPage';
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// ======================
-//  BOTTOM TAB NAVIGATOR
-// ======================
-function BottomTabs() {
+function MainTabs() {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -66,20 +62,14 @@ function BottomTabs() {
   );
 }
 
-// ======================
-//  ROOT STACK NAVIGATOR
-// ======================
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="Onboarding" component={OnboardingScreen} />
         <Stack.Screen name="SignIn" component={SignInScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
-
-        {/* Jika login sukses → masuk ke bottom tab */}
-        <Stack.Screen name="MainTabs" component={BottomTabs} />
+        <Stack.Screen name="MainTabs" component={MainTabs} />
+        <Stack.Screen name="Payment" component={PaymentPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

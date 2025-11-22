@@ -35,6 +35,7 @@ const OrderScreen = ({navigation}) => {
             category="Help Antar"
             deliveries={14}
             skills={['Packing Aman', 'Tracking Real-time']}
+            onPress={() => navigation.navigate('Payment')}
           />
 
           {/* ORDERBOX 2 */}
@@ -48,6 +49,7 @@ const OrderScreen = ({navigation}) => {
             category="Help Tekno"
             deliveries={32}
             skills={['Maintenance AC', 'Perbaikan Kulkas', 'Cuci AC']}
+            onPress={() => navigation.navigate('Payment')}
           />
 
           {/* ORDERBOX 3 */}
@@ -61,6 +63,7 @@ const OrderScreen = ({navigation}) => {
             category="Help Pintar"
             deliveries={10}
             skills={['Matematika', 'Fisika', 'Metode Pemahaman Cepat']}
+            onPress={() => navigation.navigate('Payment')}
           />
 
           <Spacer height={25} />

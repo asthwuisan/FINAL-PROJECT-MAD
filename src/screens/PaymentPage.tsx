@@ -1,4 +1,6 @@
 import React from 'react';
+import {useNavigation} from '@react-navigation/native';
+
 import {
   View,
   Text,
@@ -55,6 +57,8 @@ const PaymentPage = ({
   technicianPrice,
   technicianImage,
 }: PaymentPageProps) => {
+  const navigation = useNavigation();
+
   // State untuk mengelola input dan pilihan
   const [receiverName, setReceiverName] = React.useState('');
   const [receiverPhone, setReceiverPhone] = React.useState('');
@@ -86,7 +90,7 @@ const PaymentPage = ({
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.headerBar}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text style={styles.headerButton}>Kembali</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Buat Pesanan</Text>

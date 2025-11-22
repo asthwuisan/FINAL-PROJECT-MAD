@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 
-const Rating = ({ rating = 5 }) => {
-  const stars = Array.from({ length: 5 }, (_, i) => i < rating);
+const Rating = ({rating = 5}) => {
+  const stars = Array.from({length: 5}, (_, i) => i < rating);
   return (
     <View style={styles.ratingContainer}>
       {stars.map((isFilled, index) => (
@@ -26,9 +26,11 @@ const OrderBox = ({
   category = 'Help Antar',
   skills = [],
   deliveries = 1,
+  onPress,
+  navigation,
 }) => {
   return (
-    <TouchableOpacity style={[styles.container, style]}>
+    <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
       <View style={styles.card}>
         <Image source={image} style={styles.image} />
 
@@ -66,7 +68,7 @@ const OrderBox = ({
           </View>
 
           {/* Skills */}
-          <View style={{ marginTop: 10 }}>
+          <View style={{marginTop: 10}}>
             {skills.map((item, index) => (
               <View
                 key={index}
@@ -74,8 +76,7 @@ const OrderBox = ({
                   flexDirection: 'row',
                   alignItems: 'center',
                   marginBottom: 4,
-                }}
-              >
+                }}>
                 <Image
                   source={require('../../assets/skill.png')}
                   style={{
