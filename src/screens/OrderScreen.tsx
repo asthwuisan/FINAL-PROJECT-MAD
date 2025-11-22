@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -10,13 +10,10 @@ import {
 import Header2 from '../components/molecules/Header2';
 import SearchBar from '../components/molecules/SearchBar';
 import OrderBox from '../components/molecules/OrderBox';
-import BottomNav from '../components/molecules/BottomNav';
 
-const Spacer = ({ height }) => <View style={{ height }} />;
+const Spacer = ({height}) => <View style={{height}} />;
 
-const OrderScreen = () => {
-  const [activeTab, setActiveTab] = useState('OrderScreen');
-
+const OrderScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#FAFAFA" />
@@ -38,6 +35,7 @@ const OrderScreen = () => {
             category="Help Antar"
             deliveries={14}
             skills={['Packing Aman', 'Tracking Real-time']}
+            onPress={() => navigation.navigate('Payment')}
           />
 
           {/* ORDERBOX 2 */}
@@ -51,6 +49,7 @@ const OrderScreen = () => {
             category="Help Tekno"
             deliveries={32}
             skills={['Maintenance AC', 'Perbaikan Kulkas', 'Cuci AC']}
+            onPress={() => navigation.navigate('Payment')}
           />
 
           {/* ORDERBOX 3 */}
@@ -64,13 +63,12 @@ const OrderScreen = () => {
             category="Help Pintar"
             deliveries={10}
             skills={['Matematika', 'Fisika', 'Metode Pemahaman Cepat']}
+            onPress={() => navigation.navigate('Payment')}
           />
 
           <Spacer height={25} />
         </View>
       </ScrollView>
-
-      <BottomNav activeTab={activeTab} onChangeTab={setActiveTab} />
     </SafeAreaView>
   );
 };

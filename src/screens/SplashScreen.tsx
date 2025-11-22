@@ -1,11 +1,10 @@
 import {StyleSheet, Text, View, Image} from 'react-native';
 import React, {useEffect} from 'react';
-import Logo from '../assets/logo.png';
 
 const SplashScreen = ({navigation}) => {
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace('OnboardingScreen'); // Pindah otomatis
+      navigation.replace('OnboardingScreen');
     }, 2000);
 
     return () => clearTimeout(timer);
@@ -13,7 +12,7 @@ const SplashScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Image source={Logo} style={styles.logo} />
+      <Image source={require('../assets/logo.png')} style={styles.logo} />
     </View>
   );
 };

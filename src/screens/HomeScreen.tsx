@@ -12,13 +12,10 @@ import SearchBar from '../components/molecules/SearchBar';
 import Category from '../components/molecules/Category';
 import BannerCard from '../components/atom/Banner';
 import RecommendationSection from '../components/molecules/ReccomendationSection';
-import BottomNav from '../components/molecules/BottomNav';
 
 const Spacer = ({height}) => <View style={{height}} />;
 
-const HomeScreen = () => {
-  const [activeTab, setActiveTab] = useState('home'); // tab aktif
-
+const HomeScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#FAFAFA" />
@@ -42,7 +39,6 @@ const HomeScreen = () => {
       </ScrollView>
 
       {/* Bottom Nav di luar ScrollView agar selalu berada di bawah */}
-      <BottomNav activeTab={activeTab} onChangeTab={setActiveTab} />
     </SafeAreaView>
   );
 };
