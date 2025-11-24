@@ -1,7 +1,17 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StatusBar } from 'react-native';
+import { View, Text, TouchableOpacity, StatusBar } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const Header2 = ({ navigation }) => {
+const Header2 = ({ navigation }: { navigation?: any }) => {
+  const navigationHook = useNavigation<any>();
+  const nav = navigation ?? navigationHook;
+
+  const handleBack = () => {
+    if (nav && typeof nav.goBack === 'function') {
+      nav.goBack();
+    }
+  };
+
   return (
     <View
       style={{
@@ -21,7 +31,7 @@ const Header2 = ({ navigation }) => {
         }}
       >
         {/* Tombol Kembali */}
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={handleBack}>
           <Text style={{ fontSize: 14, color: '#3B8ED1' }}>Kembali</Text>
         </TouchableOpacity>
 
