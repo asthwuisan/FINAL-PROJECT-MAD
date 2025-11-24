@@ -1,8 +1,9 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Image} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Image } from 'react-native';
+import { UserProvider } from './src/context/UserContext';
 
 // Import Screens
 import SplashScreen from './src/screens/SplashScreen';
@@ -15,6 +16,16 @@ import FavoritePage from './src/screens/FavoritePage';
 import PointsPage from './src/screens/PointsPage';
 import ProfileSettingsPage from './src/screens/ProfileSettingsPage';
 
+// Import Category Screens
+import HelpRumah from './src/screens/HelpRumah';
+import HelpAntar from './src/screens/HelpAntar';
+import HelpPintar from './src/screens/HelpPintar';
+import HelpTekno from './src/screens/HelpTekno';
+
+// Import Payment Screens
+import PaymentPage from './src/screens/PaymentPage';
+import PaymentSuccessScreen from './src/screens/PaymentSuccessScreen';
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -24,12 +35,12 @@ const Tab = createBottomTabNavigator();
 function BottomTabs() {
   return (
     <Tab.Navigator
-      screenOptions={({route}) => ({
+      screenOptions={({ route }) => ({
         headerShown: false,
         tabBarShowLabel: true,
         tabBarActiveTintColor: '#001f3f',
         tabBarInactiveTintColor: '#8ea3b7',
-        tabBarIcon: ({focused}) => {
+        tabBarIcon: ({ focused }) => {
           let icon;
 
           if (route.name === 'Beranda') {
@@ -54,7 +65,7 @@ function BottomTabs() {
               : require('./src/assets/profilegrey.png');
           }
 
-          return <Image source={icon} style={{width: 28, height: 28}} />;
+          return <Image source={icon} style={{ width: 28, height: 28 }} />;
         },
       })}>
       <Tab.Screen name="Beranda" component={HomeScreen} />
@@ -71,16 +82,29 @@ function BottomTabs() {
 // ======================
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-        <Stack.Screen name="SignIn" component={SignInScreen} />
-        <Stack.Screen name="SignUp" component={SignUpScreen} />
+    <UserProvider>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {/* Initial Flow */}
+          <Stack.Screen name="Splash" component={SplashScreen} />
+          <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+          <Stack.Screen name="SignIn" component={SignInScreen} />
+          <Stack.Screen name="SignUp" component={SignUpScreen} />
 
-        {/* Jika login sukses → masuk ke bottom tab */}
-        <Stack.Screen name="MainTabs" component={BottomTabs} />
-      </Stack.Navigator>
-    </NavigationContainer>
+          {/* Main App - Bottom Tabs */}
+          <Stack.Screen name="MainTabs" component={BottomTabs} />
+
+          {/* Category Detail Screens */}
+          <Stack.Screen name="HelpRumah" component={HelpRumah} />
+          <Stack.Screen name="HelpAntar" component={HelpAntar} />
+          <Stack.Screen name="HelpPintar" component={HelpPintar} />
+          <Stack.Screen name="HelpTekno" component={HelpTekno} />
+
+          {/* Payment Flow */}
+          <Stack.Screen name="Payment" component={PaymentPage} />
+          <Stack.Screen name="PaymentSuccess" component={PaymentSuccessScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserProvider>
   );
 }

@@ -7,10 +7,13 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
+import { firebaseAuth, firebaseFirestore, collections } from '../config/firebaseConfig';
 
 // Komponen untuk Badge "Help Rumah"
-const HelpBadge = ({children}: {children: React.ReactNode}) => (
+const HelpBadge = ({ children }: { children: React.ReactNode }) => (
   <View style={styles.badgeContainer}>
     <Text style={styles.badgeText}>{children}</Text>
   </View>
@@ -39,30 +42,107 @@ const PaymentOption = ({
 // Kita tidak membutuhkan semua props OrderCard untuk halaman pembayaran,
 // tetapi kita akan memasukkan data teknisi sebagai props.
 export interface PaymentPageProps {
-  technicianName: string;
-  technicianRole: string;
-  technicianTag: string;
-  technicianLocation: string;
-  technicianPrice: string;
-  technicianImage: any;
+  navigation: any;
+  route: {
+    params: {
+      technicianName: string;
+      technicianRole: string;
+      technicianTag: string;
+      technicianLocation: string;
+      technicianPrice: string;
+      technicianImage: any;
+    };
+  };
 }
 
-const PaymentPage = ({
-  technicianName,
-  technicianRole,
-  technicianTag,
-  technicianLocation,
-  technicianPrice,
-  technicianImage,
-}: PaymentPageProps) => {
+const PaymentPage = ({ navigation, route }: PaymentPageProps) => {
+  const {
+    technicianName,
+    technicianRole,
+    technicianTag,
+    technicianLocation,
+    technicianPrice,
+    technicianImage,
+  } = route.params;
+
   // State untuk mengelola input dan pilihan
   const [receiverName, setReceiverName] = React.useState('');
   const [receiverPhone, setReceiverPhone] = React.useState('');
   const [address, setAddress] = React.useState('');
   const [selectedPayment, setSelectedPayment] = React.useState('Transfer Bank');
+  const [loading, setLoading] = React.useState(false);
 
   // Contoh data untuk tanggal (bisa diganti dengan DatePicker di implementasi nyata)
-  const currentDate = 'Sab, 32 Des'; // Placeholder sesuai desain Anda
+  const currentDate = new Date().toLocaleDateString('id-ID', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+  });
+
+  const handleCreateOrder = async () => {
+    // Validasi
+    if (!receiverName || !receiverPhone || !address) {
+      Alert.alert('Lengkapi Data', 'Semua kolom wajib diisi.');
+      return;
+    }
+
+    const currentUser = firebaseAuth.currentUser;
+    if (!currentUser) {
+      Alert.alert('Error', 'Anda harus login terlebih dahulu.');
+      navigation.navigate('SignIn');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Get user data from Firestore
+      const userDoc = await firebaseFirestore
+        .collection(collections.users)
+        .doc(currentUser.uid)
+        .get();
+
+      const userData = userDoc.data();
+
+      // Generate order ID
+      const orderId = `ORD-${Date.now()}`;
+
+      // Create order in Firestore
+      await firebaseFirestore.collection(collections.orders).doc(orderId).set({
+        orderId,
+        userId: currentUser.uid,
+        userName: userData?.name || '',
+        userPhone: userData?.phone || '',
+        technicianName,
+        technicianRole,
+        technicianPrice,
+        receiverName: receiverName.trim(),
+        receiverPhone: receiverPhone.trim(),
+        address: address.trim(),
+        date: currentDate,
+        paymentMethod: selectedPayment,
+        totalPrice: technicianPrice,
+        status: 'pending',
+        createdAt: new Date(),
+      });
+
+      setLoading(false);
+
+      // Navigate to success screen
+      navigation.replace('PaymentSuccess', {
+        orderId,
+        technicianName,
+        technicianRole,
+        totalPrice: technicianPrice,
+        date: currentDate,
+        paymentMethod: selectedPayment,
+      });
+    } catch (error) {
+      setLoading(false);
+      console.error('Error creating order:', error);
+      Alert.alert('Gagal', 'Terjadi kesalahan saat membuat pesanan.');
+    }
+  };
 
   // --- Bagian Card Informasi Teknisi (Mirip OrderCard) ---
   const TechnicianInfoCard = () => (
@@ -86,11 +166,11 @@ const PaymentPage = ({
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.headerBar}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text style={styles.headerButton}>Kembali</Text>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Buat Pesanan</Text>
-        <View style={{width: 50}} />
+        <View style={{ width: 50 }} />
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -166,8 +246,15 @@ const PaymentPage = ({
           <Text style={styles.totalLabel}>Total</Text>
           <Text style={styles.totalPrice}>Rp150.000</Text>
         </View>
-        <TouchableOpacity style={styles.buttonCreateOrder}>
-          <Text style={styles.buttonText}>Buat Pesanan</Text>
+        <TouchableOpacity
+          style={[styles.buttonCreateOrder, loading && styles.buttonDisabled]}
+          onPress={handleCreateOrder}
+          disabled={loading}>
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Buat Pesanan</Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>
@@ -389,6 +476,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 25,
     paddingVertical: 12,
+  },
+  buttonDisabled: {
+    opacity: 0.6,
   },
   buttonText: {
     color: 'white',

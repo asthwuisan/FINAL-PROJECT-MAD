@@ -1,18 +1,31 @@
 import React from 'react';
-import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
 const categories = [
-  {name: 'Help Rumah', source: require('../../assets/HelpRumah.png')},
-  {name: 'Help Antar', source: require('../../assets/HelpAntar.png')},
-  {name: 'Help Pintar', source: require('../../assets/HelpPintar.png')},
-  {name: 'Help Tekno', source: require('../../assets/HelpTekno.png')},
+  { name: 'Help Rumah', source: require('../../assets/HelpRumah.png'), screen: 'HelpRumah' },
+  { name: 'Help Antar', source: require('../../assets/HelpAntar.png'), screen: 'HelpAntar' },
+  { name: 'Help Pintar', source: require('../../assets/HelpPintar.png'), screen: 'HelpPintar' },
+  { name: 'Help Tekno', source: require('../../assets/HelpTekno.png'), screen: 'HelpTekno' },
 ];
 
-const Category = () => {
+interface CategoryProps {
+  navigation?: any;
+}
+
+const Category = ({ navigation }: CategoryProps) => {
+  const handleCategoryPress = (screenName: string) => {
+    if (navigation) {
+      navigation.navigate(screenName);
+    }
+  };
+
   return (
     <View style={styles.container}>
       {categories.map((category, index) => (
-        <TouchableOpacity key={index} style={styles.categoryItem}>
+        <TouchableOpacity
+          key={index}
+          style={styles.categoryItem}
+          onPress={() => handleCategoryPress(category.screen)}>
           <Image source={category.source} style={styles.icon} />
           <Text style={styles.categoryText}>{category.name}</Text>
         </TouchableOpacity>

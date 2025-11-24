@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import SignUpHeader from '../components/molecules/Header/HSignUp';
 import {
   View,
@@ -8,16 +8,19 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
+import { firebaseAuth, firebaseFirestore, collections } from '../config/firebaseConfig';
 
-export default function SignUpScreen({navigation}: {navigation: any}) {
+export default function SignUpScreen({ navigation }: { navigation: any }) {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [pwd, setPwd] = useState('');
   const [pwd2, setPwd2] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     // Validasi dasar
     if (!name || !phone || !email || !pwd || !pwd2) {
       Alert.alert('Lengkapi Data', 'Semua kolom wajib diisi.');
@@ -34,17 +37,62 @@ export default function SignUpScreen({navigation}: {navigation: any}) {
       return;
     }
 
-    // Jika semua valid → kembali ke halaman Login
-    Alert.alert('Berhasil', 'Akun berhasil dibuat!', [
-      {
-        text: 'OK',
-        onPress: () => navigation.replace('SignIn'),
-      },
-    ]);
+    setLoading(true);
+
+    try {
+      // Create user with Firebase Auth
+      const userCredential = await firebaseAuth.createUserWithEmailAndPassword(
+        email.trim(),
+        pwd
+      );
+
+      console.log('User created:', userCredential.user?.uid);
+      const user = userCredential.user;
+
+      if (user) {
+        console.log('Writing to Firestore...');
+        // Store additional user data in Firestore
+        await firebaseFirestore.collection(collections.users).doc(user.uid).set({
+          uid: user.uid,
+          email: email.trim(),
+          name: name.trim(),
+          phone: phone.trim(),
+          createdAt: new Date(),
+        });
+        console.log('Firestore write successful');
+      } else {
+        console.error('User object is null');
+      }
+
+      setLoading(false);
+
+      Alert.alert('Berhasil', 'Akun berhasil dibuat!', [
+        {
+          text: 'OK',
+          onPress: () => navigation.replace('SignIn'),
+        },
+      ]);
+    } catch (error: any) {
+      setLoading(false);
+
+      let errorMessage = 'Terjadi kesalahan. Silakan coba lagi.';
+
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = 'Email sudah terdaftar. Silakan gunakan email lain.';
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = 'Format email tidak valid.';
+      } else if (error.code === 'auth/weak-password') {
+        errorMessage = 'Kata sandi terlalu lemah.';
+      } else if (error.code === 'auth/network-request-failed') {
+        errorMessage = 'Tidak ada koneksi internet.';
+      }
+
+      Alert.alert('Gagal Mendaftar', errorMessage);
+    }
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <SignUpHeader navigation={navigation} title="Daftar" />
 
       <ScrollView contentContainerStyle={styles.container}>
@@ -78,8 +126,15 @@ export default function SignUpScreen({navigation}: {navigation: any}) {
           ● Harus ada min. 1 angka atau simbol (!@#$%)
         </Text>
 
-        <TouchableOpacity style={styles.btn} onPress={handleRegister}>
-          <Text style={styles.btnText}>Daftar</Text>
+        <TouchableOpacity
+          style={[styles.btn, loading && styles.btnDisabled]}
+          onPress={handleRegister}
+          disabled={loading}>
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.btnText}>Daftar</Text>
+          )}
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -87,8 +142,8 @@ export default function SignUpScreen({navigation}: {navigation: any}) {
 }
 
 const styles = StyleSheet.create({
-  container: {padding: 25, paddingBottom: 50},
-  label: {marginTop: 10, marginBottom: 5, fontWeight: '500'},
+  container: { padding: 25, paddingBottom: 50 },
+  label: { marginTop: 10, marginBottom: 5, fontWeight: '500' },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
@@ -96,12 +151,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 10,
   },
-  rules: {fontSize: 12, color: '#777', marginTop: 4},
+  rules: { fontSize: 12, color: '#777', marginTop: 4 },
   btn: {
     backgroundColor: '#14244B',
     padding: 15,
     borderRadius: 8,
     marginTop: 25,
   },
-  btnText: {color: '#fff', textAlign: 'center', fontWeight: '600'},
+  btnDisabled: {
+    opacity: 0.6,
+  },
+  btnText: { color: '#fff', textAlign: 'center', fontWeight: '600' },
 });

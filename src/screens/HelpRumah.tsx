@@ -15,7 +15,7 @@ const dummyData = [
     name: 'Dimas Nugroho',
     job: 'Teknisi Sanitasi',
     price: 'Rp 100.000',
-    image: require('../assets/TeknisiSanitasi.png'), // ganti sesuai gambarmu
+    image: require('../assets/TeknisiSanitasi.png'),
   },
   {
     id: 2,
@@ -54,7 +54,18 @@ const dummyData = [
   },
 ];
 
-const HelpRumah = () => {
+const HelpRumah = ({ navigation }: { navigation: any }) => {
+  const handleServicePress = (item: typeof dummyData[0]) => {
+    navigation.navigate('Payment', {
+      technicianName: item.name,
+      technicianRole: item.job,
+      technicianTag: 'Help Rumah',
+      technicianLocation: 'Jakarta',
+      technicianPrice: item.price,
+      technicianImage: item.image,
+    });
+  };
+
   return (
     <View style={styles.container}>
       <Header />
@@ -66,7 +77,10 @@ const HelpRumah = () => {
 
         <View style={styles.grid}>
           {dummyData.map(item => (
-            <TouchableOpacity key={item.id} style={styles.card}>
+            <TouchableOpacity
+              key={item.id}
+              style={styles.card}
+              onPress={() => handleServicePress(item)}>
               <Image source={item.image} style={styles.image} />
 
               <View style={styles.infoBox}>

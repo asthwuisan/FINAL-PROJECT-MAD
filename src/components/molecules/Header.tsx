@@ -6,9 +6,19 @@ import {
   TouchableOpacity,
   StatusBar,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
+import { useUser } from '../../context/UserContext';
 
 const Header = () => {
+  const { user, loading } = useUser();
+
+  // Get first name from full name
+  const getFirstName = (fullName: string | undefined) => {
+    if (!fullName) return 'Guest';
+    return fullName.split(' ')[0];
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#080000ff" />
@@ -18,8 +28,16 @@ const Header = () => {
       <View style={styles.leftContainer}>
         <Image source={require('../../assets/logo.png')} style={styles.logo} />
         <View style={styles.textContainer}>
-          <Text style={styles.greeting}>Hai, Asthried!</Text>
-          <Text style={styles.prompt}>Mau dibantu apa hari ini?</Text>
+          {loading ? (
+            <ActivityIndicator size="small" color="#202C5F" />
+          ) : (
+            <>
+              <Text style={styles.greeting}>
+                Hai, {getFirstName(user?.name)}!
+              </Text>
+              <Text style={styles.prompt}>Mau dibantu apa hari ini?</Text>
+            </>
+          )}
         </View>
       </View>
 
@@ -41,6 +59,7 @@ const Header = () => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
