@@ -128,10 +128,10 @@ export const getUserPoints = async (userId: string): Promise<number> => {
  */
 export const getUserPointTransactions = async (userId: string): Promise<PointTransaction[]> => {
   try {
+    // Fetch without orderBy to avoid index requirement, then sort in memory
     const transactionsSnapshot = await firebaseFirestore
       .collection(collections.pointTransactions)
       .where('userId', '==', userId)
-      .orderBy('createdAt', 'desc')
       .get();
 
     const transactions: PointTransaction[] = [];
@@ -149,43 +149,17 @@ export const getUserPointTransactions = async (userId: string): Promise<PointTra
       });
     });
 
+    // Sort by createdAt in descending order (newest first) in memory
+    transactions.sort((a, b) => {
+      const dateA = a.createdAt instanceof Date ? a.createdAt : new Date(a.createdAt || 0);
+      const dateB = b.createdAt instanceof Date ? b.createdAt : new Date(b.createdAt || 0);
+      return dateB.getTime() - dateA.getTime();
+    });
+
     return transactions;
   } catch (error) {
     console.error('Error getting point transactions:', error);
-    // If orderBy fails due to missing index, try without it and sort in memory
-    try {
-      const transactionsSnapshot = await firebaseFirestore
-        .collection(collections.pointTransactions)
-        .where('userId', '==', userId)
-        .get();
-
-      const transactions: PointTransaction[] = [];
-      transactionsSnapshot.forEach(doc => {
-        const data = doc.data();
-        transactions.push({
-          id: doc.id,
-          userId: data.userId,
-          orderId: data.orderId,
-          points: data.points,
-          type: data.type,
-          description: data.description,
-          expiryDate: data.expiryDate?.toDate ? data.expiryDate.toDate() : data.expiryDate,
-          createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : data.createdAt,
-        });
-      });
-
-      // Sort by createdAt in descending order
-      transactions.sort((a, b) => {
-        const dateA = a.createdAt instanceof Date ? a.createdAt : new Date(a.createdAt);
-        const dateB = b.createdAt instanceof Date ? b.createdAt : new Date(b.createdAt);
-        return dateB.getTime() - dateA.getTime();
-      });
-
-      return transactions;
-    } catch (fallbackError) {
-      console.error('Error in fallback transaction fetch:', fallbackError);
-      return [];
-    }
+    return [];
   }
 };
 

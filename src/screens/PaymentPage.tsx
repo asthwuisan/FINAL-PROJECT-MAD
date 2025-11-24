@@ -244,7 +244,7 @@ const PaymentPage = ({ navigation, route }: PaymentPageProps) => {
       <View style={styles.footerBar}>
         <View style={styles.totalContainer}>
           <Text style={styles.totalLabel}>Total</Text>
-          <Text style={styles.totalPrice}>Rp150.000</Text>
+          <Text style={styles.totalPrice}>{technicianPrice}</Text>
         </View>
         <TouchableOpacity
           style={[styles.buttonCreateOrder, loading && styles.buttonDisabled]}
@@ -360,9 +360,9 @@ const styles = StyleSheet.create({
     borderColor: '#E2E8F0',
   },
   avatar: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 65,
+    height: 80,
+    borderRadius: 5,
     marginRight: 16,
     backgroundColor: '#D1FAE5', // Placeholder warna untuk gambar
   },
