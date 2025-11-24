@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   StyleSheet,
@@ -13,9 +13,9 @@ import Category from '../components/molecules/Category';
 import BannerCard from '../components/atom/Banner';
 import RecommendationSection from '../components/molecules/ReccomendationSection';
 
-const Spacer = ({height}) => <View style={{height}} />;
+const Spacer = ({ height }: { height: number }) => <View style={{ height }} />;
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({ navigation }: { navigation: any }) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#FAFAFA" />
@@ -25,7 +25,7 @@ const HomeScreen = ({navigation}) => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
           <SearchBar style={styles.searchBar} />
-          <Category style={styles.category} />
+          <Category style={styles.category} navigation={navigation} />
 
           <Spacer height={25} />
           <BannerCard

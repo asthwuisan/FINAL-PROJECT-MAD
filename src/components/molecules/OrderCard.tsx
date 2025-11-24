@@ -44,6 +44,7 @@ const HeartIcon = ({
 );
 
 export const OrderCard = ({
+  image,
   name,
   role,
   tag,
@@ -55,6 +56,10 @@ export const OrderCard = ({
 }: OrderCardProps) => {
   return (
     <View style={styles.cardContainer}>
+      {/* Avatar Image */}
+      {image && (
+        <Image source={image} style={styles.avatar} />
+      )}
       <View style={styles.contentContainer}>
         <View style={styles.header}>
           <View>
@@ -93,10 +98,24 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+    marginBottom: 16,
+  },
+  avatar: {
+    width: 75,
+    height: 110,
+    borderRadius: 10,
+    position: 'absolute',
+    left: 10,
+    top: 12,
+    borderWidth: 3,
+    borderColor: 'white',
+    backgroundColor: '#D1FAE5',
+    resizeMode: 'cover',
+    marginRight: 30,
   },
   contentContainer: {
     flex: 1,
-    marginLeft: 50, // Space for the overlapping avatar
+    marginLeft: 65, // Space for the overlapping avatar
   },
   header: {
     flexDirection: 'row',

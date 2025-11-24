@@ -1,8 +1,76 @@
-import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {View, Text, StyleSheet, Image, ActivityIndicator} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { firebaseAuth } from '../../config/firebaseConfig';
+import { getUserPoints, getUserPointTransactions } from '../../utils/pointsService';
 
-const PointHeader: React.FC = () => {
+interface PointHeaderProps {
+  refreshTrigger?: number;
+}
+
+const PointHeader: React.FC<PointHeaderProps> = ({ refreshTrigger }) => {
+  const [totalPoints, setTotalPoints] = useState<number>(0);
+  const [loading, setLoading] = useState(true);
+  const [expiringPoints, setExpiringPoints] = useState<{ points: number; date: string } | null>(null);
+
+  useEffect(() => {
+    loadPointsData();
+  }, [refreshTrigger]);
+
+  const loadPointsData = async () => {
+    const currentUser = firebaseAuth.currentUser;
+    if (!currentUser) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const points = await getUserPoints(currentUser.uid);
+      setTotalPoints(points);
+
+      // Get transactions to find expiring points
+      const transactions = await getUserPointTransactions(currentUser.uid);
+      const now = new Date();
+      const nextMonth = new Date();
+      nextMonth.setMonth(nextMonth.getMonth() + 1);
+
+      // Find points expiring in the next month
+      const expiring = transactions
+        .filter(t => t.type === 'earned' && t.expiryDate)
+        .filter(t => {
+          const expiry = t.expiryDate instanceof Date ? t.expiryDate : new Date(t.expiryDate);
+          return expiry >= now && expiry <= nextMonth;
+        })
+        .reduce((sum, t) => sum + t.points, 0);
+
+      if (expiring > 0) {
+        const earliestExpiry = transactions
+          .filter(t => t.type === 'earned' && t.expiryDate)
+          .map(t => t.expiryDate instanceof Date ? t.expiryDate : new Date(t.expiryDate))
+          .filter(d => d >= now && d <= nextMonth)
+          .sort((a, b) => a.getTime() - b.getTime())[0];
+
+        if (earliestExpiry) {
+          setExpiringPoints({
+            points: expiring,
+            date: earliestExpiry.toLocaleDateString('id-ID', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+            }),
+          });
+        }
+      } else {
+        setExpiringPoints(null);
+      }
+    } catch (error) {
+      console.error('Error loading points:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <View style={styles.cardContainer}>
       <LinearGradient
@@ -18,14 +86,20 @@ const PointHeader: React.FC = () => {
               source={require('../../assets/koin.png')}
               style={styles.icon}
             />
-            <Text style={styles.points}>80</Text>
+            {loading ? (
+              <ActivityIndicator color="#FFF" size="large" />
+            ) : (
+              <Text style={styles.points}>{totalPoints}</Text>
+            )}
           </View>
 
           <Text style={styles.subtitle}>1 HelpYu Points = Rp1</Text>
 
-          <Text style={styles.expiryText}>
-            300 Points-mu kadaluarsa pada 01 Nov 2026
-          </Text>
+          {expiringPoints && (
+            <Text style={styles.expiryText}>
+              {expiringPoints.points} Points-mu kadaluarsa pada {expiringPoints.date}
+            </Text>
+          )}
         </View>
       </LinearGradient>
     </View>

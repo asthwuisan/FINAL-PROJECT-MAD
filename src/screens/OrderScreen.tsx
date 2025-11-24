@@ -35,6 +35,8 @@ const OrderScreen = ({navigation}) => {
             category="Help Antar"
             deliveries={14}
             skills={['Packing Aman', 'Tracking Real-time']}
+            navigation={navigation}
+            serviceId="aditya_rahman_kurir"
           />
 
           {/* ORDERBOX 2 */}
@@ -48,6 +50,8 @@ const OrderScreen = ({navigation}) => {
             category="Help Tekno"
             deliveries={32}
             skills={['Maintenance AC', 'Perbaikan Kulkas', 'Cuci AC']}
+            navigation={navigation}
+            serviceId="andi_prasetyo_teknisi"
           />
 
           {/* ORDERBOX 3 */}
@@ -61,6 +65,8 @@ const OrderScreen = ({navigation}) => {
             category="Help Pintar"
             deliveries={10}
             skills={['Matematika', 'Fisika', 'Metode Pemahaman Cepat']}
+            navigation={navigation}
+            serviceId="rina_kartika_tutor"
           />
 
           <Spacer height={25} />

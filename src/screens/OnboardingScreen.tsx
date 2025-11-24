@@ -1,8 +1,8 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 
-export default function OnboardingScreen({navigation}) {
+export default function OnboardingScreen({ navigation }) {
   const pages = [
     {
       backgroundColor: '#B6CF7B',
@@ -70,8 +70,8 @@ export default function OnboardingScreen({navigation}) {
   return (
     <Onboarding
       pages={pages}
-      onDone={() => navigation.replace('SignInScreen')}
-      onSkip={() => navigation.replace('SignInScreen')}
+      onDone={() => navigation.replace('SignIn')}
+      onSkip={() => navigation.replace('SignIn')}
       titleStyles={styles.title}
       subTitleStyles={styles.subtitle}
     />

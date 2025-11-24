@@ -1,12 +1,36 @@
 import React from 'react';
 import {TouchableOpacity, Text, StyleSheet, View} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {
+  EditProfileIcon,
+  PaymentMethodIcon,
+  LanguageIcon,
+  HelpCenterIcon,
+  LogoutIcon,
+  ChevronForwardIcon,
+} from './SettingsIcons';
 
 interface SettingsListItemProps {
   label: string;
   icon: string; // icon name seperti "person-circle-outline"
   onPress?: () => void;
 }
+
+const getIconComponent = (iconName: string) => {
+  switch (iconName) {
+    case 'person-circle-outline':
+      return <EditProfileIcon />;
+    case 'card-outline':
+      return <PaymentMethodIcon />;
+    case 'language-outline':
+      return <LanguageIcon />;
+    case 'help-circle-outline':
+      return <HelpCenterIcon />;
+    case 'log-out-outline':
+      return <LogoutIcon />;
+    default:
+      return <EditProfileIcon />;
+  }
+};
 
 export const SettingsListItem: React.FC<SettingsListItemProps> = ({
   label,
@@ -15,11 +39,13 @@ export const SettingsListItem: React.FC<SettingsListItemProps> = ({
 }) => (
   <TouchableOpacity style={stylesItem.container} onPress={onPress}>
     <View style={stylesItem.leftContent}>
-      <Ionicons name={icon} size={22} color="#1F2937" />
+      <View style={stylesItem.iconWrapper}>
+        {getIconComponent(icon)}
+      </View>
       <Text style={stylesItem.label}>{label}</Text>
     </View>
 
-    <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
+    <ChevronForwardIcon />
   </TouchableOpacity>
 );
 
@@ -35,7 +61,9 @@ const stylesItem = StyleSheet.create({
   leftContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+  },
+  iconWrapper: {
+    marginRight: 10,
   },
   label: {
     fontSize: 16,
