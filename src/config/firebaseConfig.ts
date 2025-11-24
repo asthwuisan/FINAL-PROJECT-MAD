@@ -30,6 +30,9 @@ firebaseFirestore.settings({
 export const collections = {
   users: 'users',
   orders: 'orders',
+  favorites: 'favorites',
+  points: 'points',
+  pointTransactions: 'pointTransactions',
 };
 
 // User data interface
@@ -57,5 +60,24 @@ export interface OrderData {
   paymentMethod: string;
   totalPrice: string;
   status: string;
+  createdAt: Date;
+}
+
+// Points data interface
+export interface PointsData {
+  userId: string;
+  totalPoints: number;
+  lastUpdated: Date;
+}
+
+// Point transaction interface
+export interface PointTransaction {
+  id: string;
+  userId: string;
+  orderId?: string;
+  points: number;
+  type: 'earned' | 'redeemed' | 'expired';
+  description: string;
+  expiryDate?: Date;
   createdAt: Date;
 }

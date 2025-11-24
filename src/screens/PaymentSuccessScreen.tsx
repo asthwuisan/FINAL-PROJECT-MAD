@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     View,
     Text,
@@ -7,6 +7,8 @@ import {
     ScrollView,
     Image,
 } from 'react-native';
+import { firebaseAuth, firebaseFirestore, collections } from '../config/firebaseConfig';
+import { awardPointsForOrder } from '../utils/pointsService';
 
 export interface PaymentSuccessProps {
     navigation: any;
@@ -31,6 +33,52 @@ const PaymentSuccessScreen = ({ navigation, route }: PaymentSuccessProps) => {
         date,
         paymentMethod,
     } = route.params;
+
+    // Award points when payment is successful
+    React.useEffect(() => {
+        const awardPoints = async () => {
+            const currentUser = firebaseAuth.currentUser;
+            if (!currentUser) return;
+
+            try {
+                // Check if points were already awarded for this order
+                const orderDoc = await firebaseFirestore
+                    .collection(collections.orders)
+                    .doc(orderId)
+                    .get();
+
+                const orderData = orderDoc.data();
+                
+                // Only award points if order status is not 'completed' yet
+                if (orderData && orderData.status !== 'completed') {
+                    // Update order status to completed
+                    await firebaseFirestore
+                        .collection(collections.orders)
+                        .doc(orderId)
+                        .update({
+                            status: 'completed',
+                            completedAt: new Date(),
+                        });
+
+                    // Award points
+                    const pointsAwarded = await awardPointsForOrder(
+                        currentUser.uid,
+                        orderId,
+                        totalPrice,
+                        technicianName,
+                        technicianRole
+                    );
+
+                    console.log(`Awarded ${pointsAwarded} points for order ${orderId}`);
+                }
+            } catch (error) {
+                console.error('Error awarding points:', error);
+                // Don't show error to user, just log it
+            }
+        };
+
+        awardPoints();
+    }, [orderId, totalPrice, technicianName, technicianRole]);
 
     return (
         <View style={styles.container}>
