@@ -1,6 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
-import { firebaseAuth, firebaseFirestore, collections } from '../../config/firebaseConfig';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import {
+  firebaseAuth,
+  firebaseFirestore,
+  collections,
+} from '../../config/firebaseConfig';
 
 // Helper function to get image identifier from image source
 const getImageIdentifier = (image: any): string => {
@@ -15,24 +26,71 @@ const getImageIdentifier = (image: any): string => {
 };
 
 // Helper function to get image source from identifier
-export const getImageFromIdentifier = (identifier: string, serviceId?: string): any => {
-  // Map based on serviceId or identifier
+export const getImageFromIdentifier = (
+  identifier: string,
+  serviceId?: string,
+): any => {
+  // Map based on specific serviceId
   if (serviceId) {
-    if (serviceId.includes('kurir') || serviceId.includes('Kurir')) {
+    // Help Antar services
+    if (serviceId === 'aditya_rahman_kurir') {
       return require('../../assets/Kurir.png');
-    } else if (serviceId.includes('teknisi') || serviceId.includes('Teknisi')) {
-      return require('../../assets/Teknisi.png');
-    } else if (serviceId.includes('tutor') || serviceId.includes('Tutor') || serviceId.includes('Mentor')) {
+    } else if (serviceId === 'budi_santoso_kurir_motor') {
+      return require('../../assets/kurirMotor.png');
+    } else if (serviceId === 'agus_wijaya_driver') {
+      return require('../../assets/driver.png');
+    } else if (serviceId === 'rina_susanti_kurir_makanan') {
+      return require('../../assets/kurirMakanan.png');
+    } else if (serviceId === 'hendra_kurnia_pesan_antar') {
+      return require('../../assets/pesanAntar.png');
+    }
+
+    // Help Rumah services
+    else if (serviceId === 'dimas_nugroho_teknisi') {
+      return require('../../assets/TeknisiSanitasi.png');
+    } else if (serviceId === 'fajar_wahyudi_tukang') {
+      return require('../../assets/TukangPasangKeramik.png');
+    } else if (serviceId === 'dewi_oktaviani_cleaning') {
+      return require('../../assets/CleaningService.png');
+    } else if (serviceId === 'rina_marlina_chef') {
+      return require('../../assets/ChefPribadi.png');
+    } else if (serviceId === 'siti_rahma_titip_belanja') {
+      return require('../../assets/TukangBelanja.png');
+    }
+
+    // Help Pintar services
+    else if (serviceId === 'rina_kartika_tutor') {
       return require('../../assets/Mentor.png');
+    } else if (serviceId === 'siti_aminah_guru') {
+      return require('../../assets/guruMath.png');
+    } else if (serviceId === 'ahmad_dahlan_guru') {
+      return require('../../assets/guruBing.png');
+    } else if (serviceId === 'rina_kusuma_tutor') {
+      return require('../../assets/guruFisika.png');
+    } else if (serviceId === 'bambang_sutrisno_tutor') {
+      return require('../../assets/guruMusik.png');
+    }
+
+    // Help Tekno services
+    else if (serviceId === 'andi_prasetyo_teknisi') {
+      return require('../../assets/Teknisi.png');
+    } else if (serviceId === 'rudi_hartono_teknisi') {
+      return require('../../assets/computerTechnician.png');
+    } else if (serviceId === 'eka_prasetya_teknisi') {
+      return require('../../assets/phoneTechnician.png');
+    } else if (serviceId === 'deni_ramadhan_teknisi') {
+      return require('../../assets/networkTechnician.png');
+    } else if (serviceId === 'wawan_setiawan_teknisi') {
+      return require('../../assets/laptopTechnician.png');
     }
   }
-  
+
   // Fallback to default
   return require('../../assets/Teknisi.png');
 };
 
-const Rating = ({ rating = 5 }) => {
-  const stars = Array.from({ length: 5 }, (_, i) => i < rating);
+const Rating = ({rating = 5}) => {
+  const stars = Array.from({length: 5}, (_, i) => i < rating);
   return (
     <View style={styles.ratingContainer}>
       {stars.map((isFilled, index) => (
@@ -118,7 +176,10 @@ const OrderBox = ({
     e.stopPropagation(); // Prevent card press when clicking heart
 
     if (!currentUser) {
-      Alert.alert('Login Diperlukan', 'Silakan login untuk menambahkan ke favorit.');
+      Alert.alert(
+        'Login Diperlukan',
+        'Silakan login untuk menambahkan ke favorit.',
+      );
       if (navigation) {
         navigation.navigate('SignIn');
       }
@@ -154,7 +215,7 @@ const OrderBox = ({
           imageIdentifier: serviceId, // Use serviceId to identify the image
           createdAt: new Date(),
         };
-        
+
         console.log('Adding favorite:', favoriteId, favoriteData);
         await firebaseFirestore
           .collection(collections.favorites)
@@ -170,7 +231,7 @@ const OrderBox = ({
   };
 
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={[styles.container, style]}
       onPress={handleCardPress}
       activeOpacity={0.7}>
@@ -192,10 +253,7 @@ const OrderBox = ({
                     ? require('../../assets/heart.png')
                     : require('../../assets/emptyHeart.png')
                 }
-                style={[
-                  styles.emptyHeart,
-                  isFavorite && styles.filledHeart,
-                ]}
+                style={[styles.emptyHeart, isFavorite && styles.filledHeart]}
               />
             </TouchableOpacity>
           </View>
@@ -218,7 +276,7 @@ const OrderBox = ({
           </View>
 
           {/* Skills */}
-          <View style={{ marginTop: 10 }}>
+          <View style={{marginTop: 10}}>
             {skills.map((item, index) => (
               <View
                 key={index}
@@ -226,8 +284,7 @@ const OrderBox = ({
                   flexDirection: 'row',
                   alignItems: 'center',
                   marginBottom: 4,
-                }}
-              >
+                }}>
                 <Image
                   source={require('../../assets/skill.png')}
                   style={{
@@ -251,7 +308,7 @@ const OrderBox = ({
             <Text style={styles.priceText}>{price}</Text>
 
             <Text style={styles.includedText}>
-              termasuk biaya jasa pengajar & transportasi
+              termasuk biaya jasa & transportasi
             </Text>
           </View>
         </View>
@@ -277,8 +334,9 @@ const styles = StyleSheet.create({
   image: {
     width: 130,
     height: 210,
-    resizeMode: 'contain',
+    // resizeMode: 'contain',
     alignSelf: 'center',
+    borderRadius: 15,
   },
   detailsContainer: {
     flex: 1,

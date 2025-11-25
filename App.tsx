@@ -27,6 +27,7 @@ import HelpTekno from './src/screens/HelpTekno';
 // Import Payment Screens
 import PaymentPage from './src/screens/PaymentPage';
 import PaymentSuccessScreen from './src/screens/PaymentSuccessScreen';
+import OrderStatusScreen from './src/screens/OrderStatusScreen';
 import EditProfileScreen from './src/screens/EditProfileScreen';
 import LanguageScreen from './src/screens/LanguageScreen';
 import HelpCenterScreen from './src/screens/HelpCenterScreen';
@@ -106,9 +107,10 @@ export default function App() {
             <Stack.Screen name="HelpPintar" component={HelpPintar} />
             <Stack.Screen name="HelpTekno" component={HelpTekno} />
 
-            {/* Payment Flow */}
-            <Stack.Screen name="Payment" component={PaymentPage} />
-            <Stack.Screen name="PaymentSuccess" component={PaymentSuccessScreen} />
+          {/* Payment Flow */}
+          <Stack.Screen name="Payment" component={PaymentPage} />
+          <Stack.Screen name="PaymentSuccess" component={PaymentSuccessScreen} />
+          <Stack.Screen name="OrderStatus" component={OrderStatusScreen} />
 
             {/* Notification Screen */}
             <Stack.Screen name="Notification" component={NotificationScreen} />

@@ -18,7 +18,7 @@ export interface PaymentSuccessProps {
             technicianName: string;
             technicianRole: string;
             totalPrice: string;
-            date: string;
+            appointmentDateTime: string;
             paymentMethod: string;
         };
     };
@@ -30,7 +30,7 @@ const PaymentSuccessScreen = ({ navigation, route }: PaymentSuccessProps) => {
         technicianName,
         technicianRole,
         totalPrice,
-        date,
+        appointmentDateTime,
         paymentMethod,
     } = route.params;
 
@@ -120,8 +120,8 @@ const PaymentSuccessScreen = ({ navigation, route }: PaymentSuccessProps) => {
                     <View style={styles.separator} />
 
                     <View style={styles.detailRow}>
-                        <Text style={styles.detailLabel}>Tanggal</Text>
-                        <Text style={styles.detailValue}>{date}</Text>
+                        <Text style={styles.detailLabel}>Tanggal & Waktu</Text>
+                        <Text style={styles.detailValue}>{appointmentDateTime}</Text>
                     </View>
 
                     <View style={styles.detailRow}>
@@ -149,7 +149,13 @@ const PaymentSuccessScreen = ({ navigation, route }: PaymentSuccessProps) => {
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
                     style={styles.secondaryButton}
-                    onPress={() => navigation.navigate('Pesan')}>
+                    onPress={() => navigation.navigate('OrderStatus', {
+                        orderId,
+                        technicianName,
+                        technicianRole,
+                        appointmentDateTime,
+                        status: 'accepted'
+                    })}>
                     <Text style={styles.secondaryButtonText}>Lihat Pesanan</Text>
                 </TouchableOpacity>
 
