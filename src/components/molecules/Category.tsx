@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
-const categories = [
+const defaultCategories = [
   { name: 'Help Rumah', source: require('../../assets/HelpRumah.png'), screen: 'HelpRumah' },
   { name: 'Help Antar', source: require('../../assets/HelpAntar.png'), screen: 'HelpAntar' },
   { name: 'Help Pintar', source: require('../../assets/HelpPintar.png'), screen: 'HelpPintar' },
@@ -10,9 +10,11 @@ const categories = [
 
 interface CategoryProps {
   navigation?: any;
+  categories?: typeof defaultCategories;
+  style?: any;
 }
 
-const Category = ({ navigation }: CategoryProps) => {
+const Category = ({ navigation, categories = defaultCategories, style }: CategoryProps) => {
   const handleCategoryPress = (screenName: string) => {
     if (navigation) {
       navigation.navigate(screenName);
@@ -20,7 +22,7 @@ const Category = ({ navigation }: CategoryProps) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       {categories.map((category, index) => (
         <TouchableOpacity
           key={index}

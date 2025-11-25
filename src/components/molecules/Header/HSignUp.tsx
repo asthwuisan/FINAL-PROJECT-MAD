@@ -19,7 +19,7 @@ const SignUpHeader = ({
     <TouchableOpacity
       onPress={() => navigation.goBack()}
       style={headerStyles.backButton}>
-      <Text style={headerStyles.backText}>{'.. Kembali'}</Text>
+      <Text style={headerStyles.backText}>{'Kembali'}</Text>
     </TouchableOpacity>
 
     <Text style={headerStyles.headerTitle}>{title}</Text>
@@ -48,13 +48,14 @@ const headerStyles = StyleSheet.create({
   backText: {
     color: '#455888ff',
     fontSize: 15,
+    fontFamily: "Poppins-Medium"
   },
   headerTitle: {
     fontSize: 18,
-    fontWeight: '800',
     color: '#14244B',
     flex: 1,
     textAlign: 'center',
+    fontFamily: 'Poppins-Bold',
   },
   placeholder: {
     flex: 1,

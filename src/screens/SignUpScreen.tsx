@@ -143,7 +143,7 @@ export default function SignUpScreen({ navigation }: { navigation: any }) {
 
 const styles = StyleSheet.create({
   container: { padding: 25, paddingBottom: 50 },
-  label: { marginTop: 10, marginBottom: 5, fontWeight: '500' },
+  label: { marginTop: 10, marginBottom: 5, fontWeight: '500', fontFamily: "Poppins-SemiBold",  },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 10,
   },
-  rules: { fontSize: 12, color: '#777', marginTop: 4 },
+  rules: { fontSize: 12, color: '#777', marginTop: 4, fontFamily: "Poppins-Light", },
   btn: {
     backgroundColor: '#14244B',
     padding: 15,
@@ -161,5 +161,5 @@ const styles = StyleSheet.create({
   btnDisabled: {
     opacity: 0.6,
   },
-  btnText: { color: '#fff', textAlign: 'center', fontWeight: '600' },
+  btnText: { color: '#fff', textAlign: 'center', fontWeight: '600', fontFamily: "Poppins-Bold",  },
 });

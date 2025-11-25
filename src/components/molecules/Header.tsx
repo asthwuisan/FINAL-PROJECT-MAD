@@ -7,16 +7,37 @@ import {
   StatusBar,
   StyleSheet,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { useUser } from '../../context/UserContext';
+import { useLanguage } from '../../context/LanguageContext';
 
-const Header = () => {
+interface HeaderProps {
+  navigation?: any;
+}
+
+const Header = ({ navigation }: HeaderProps) => {
   const { user, loading } = useUser();
+  const { t } = useLanguage();
 
   // Get first name from full name
   const getFirstName = (fullName: string | undefined) => {
     if (!fullName) return 'Guest';
     return fullName.split(' ')[0];
+  };
+
+  // Handler for notification icon
+  const handleNotificationPress = () => {
+    if (navigation) {
+      navigation.navigate('Notification');
+    }
+  };
+
+  // Handler for profile icon
+  const handleProfilePress = () => {
+    if (navigation) {
+      navigation.navigate('Saya');
+    }
   };
 
   return (
@@ -33,9 +54,9 @@ const Header = () => {
           ) : (
             <>
               <Text style={styles.greeting}>
-                Hai, {getFirstName(user?.name)}!
+                {t('home.greeting').replace('{{name}}', getFirstName(user?.name))}
               </Text>
-              <Text style={styles.prompt}>Mau dibantu apa hari ini?</Text>
+              <Text style={styles.prompt}>{t('home.prompt')}</Text>
             </>
           )}
         </View>
@@ -43,13 +64,19 @@ const Header = () => {
 
       {/* Right side: Icons */}
       <View style={styles.rightContainer}>
-        <TouchableOpacity style={styles.iconButton}>
+        <TouchableOpacity 
+          style={styles.iconButton}
+          onPress={handleNotificationPress}
+        >
           <Image
             source={require('../../assets/NotifIcon.png')}
             style={styles.icon}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconButton}>
+        <TouchableOpacity 
+          style={styles.iconButton}
+          onPress={handleProfilePress}
+        >
           <Image
             source={require('../../assets/ProfileIcon.png')}
             style={styles.icon}

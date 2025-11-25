@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
-import React, { useEffect } from 'react';
+import {StyleSheet, Text, View, Image} from 'react-native';
+import React, {useEffect} from 'react';
 
-const SplashScreen = ({ navigation }) => {
+const SplashScreen = ({navigation}) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.replace('Onboarding');
-    }, 2000);
+    }, 4000);
 
     return () => clearTimeout(timer);
   }, []);
