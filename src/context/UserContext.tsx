@@ -6,6 +6,7 @@ interface UserContextType {
     loading: boolean;
     error: string | null;
     refreshUser: () => Promise<void>;
+    updateUser: (userData: Partial<UserData>) => Promise<void>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -68,6 +69,34 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
+    const updateUser = async (userData: Partial<UserData>) => {
+        try {
+            const currentUser = firebaseAuth.currentUser;
+            if (!currentUser) {
+                throw new Error('No authenticated user');
+            }
+
+            console.log('[UserContext] Updating user data:', userData);
+
+            // Update user data in Firestore
+            await firebaseFirestore
+                .collection(collections.users)
+                .doc(currentUser.uid)
+                .update({
+                    ...userData,
+                    updatedAt: new Date(),
+                });
+
+            // Update local state
+            setUser(prevUser => prevUser ? { ...prevUser, ...userData } : null);
+
+            console.log('[UserContext] User data updated successfully');
+        } catch (error) {
+            console.error('[UserContext] Error updating user data:', error);
+            throw error;
+        }
+    };
+
     useEffect(() => {
         console.log('[UserContext] Setting up auth listener');
         // Subscribe to Firebase auth state changes
@@ -93,7 +122,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, []);
 
     return (
-        <UserContext.Provider value={{ user, loading, error, refreshUser }}>
+        <UserContext.Provider value={{ user, loading, error, refreshUser, updateUser }}>
             {children}
         </UserContext.Provider>
     );

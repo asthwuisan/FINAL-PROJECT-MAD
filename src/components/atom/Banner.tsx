@@ -1,11 +1,17 @@
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 
-const BannerCard = ({ image, onPress }) => {
+interface BannerCardProps {
+  image: any;
+  onPress?: () => void;
+  style?: any;
+}
+
+const BannerCard = ({ image, onPress, style }: BannerCardProps) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
       <Image
-        source={require('../../assets/BannerCard.png')}
+        source={image}
         style={styles.image}
       />
     </TouchableOpacity>

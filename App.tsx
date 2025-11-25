@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Image } from 'react-native';
 import { UserProvider } from './src/context/UserContext';
+import { LanguageProvider } from './src/context/LanguageContext';
 
 // Import Screens
 import SplashScreen from './src/screens/SplashScreen';
@@ -15,6 +16,7 @@ import OrderScreen from './src/screens/OrderScreen';
 import FavoritePage from './src/screens/FavoritePage';
 import PointsPage from './src/screens/PointsPage';
 import ProfileSettingsPage from './src/screens/ProfileSettingsPage';
+import NotificationScreen from './src/screens/NotificationScreen';
 
 // Import Category Screens
 import HelpRumah from './src/screens/HelpRumah';
@@ -25,6 +27,9 @@ import HelpTekno from './src/screens/HelpTekno';
 // Import Payment Screens
 import PaymentPage from './src/screens/PaymentPage';
 import PaymentSuccessScreen from './src/screens/PaymentSuccessScreen';
+import EditProfileScreen from './src/screens/EditProfileScreen';
+import LanguageScreen from './src/screens/LanguageScreen';
+import HelpCenterScreen from './src/screens/HelpCenterScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -83,28 +88,38 @@ function BottomTabs() {
 export default function App() {
   return (
     <UserProvider>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {/* Initial Flow */}
-          <Stack.Screen name="Splash" component={SplashScreen} />
-          <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-          <Stack.Screen name="SignIn" component={SignInScreen} />
-          <Stack.Screen name="SignUp" component={SignUpScreen} />
+      <LanguageProvider>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            {/* Initial Flow */}
+            <Stack.Screen name="Splash" component={SplashScreen} />
+            <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+            <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen name="SignUp" component={SignUpScreen} />
 
-          {/* Main App - Bottom Tabs */}
-          <Stack.Screen name="MainTabs" component={BottomTabs} />
+            {/* Main App - Bottom Tabs */}
+            <Stack.Screen name="MainTabs" component={BottomTabs} />
 
-          {/* Category Detail Screens */}
-          <Stack.Screen name="HelpRumah" component={HelpRumah} />
-          <Stack.Screen name="HelpAntar" component={HelpAntar} />
-          <Stack.Screen name="HelpPintar" component={HelpPintar} />
-          <Stack.Screen name="HelpTekno" component={HelpTekno} />
+            {/* Category Detail Screens */}
+            <Stack.Screen name="HelpRumah" component={HelpRumah} />
+            <Stack.Screen name="HelpAntar" component={HelpAntar} />
+            <Stack.Screen name="HelpPintar" component={HelpPintar} />
+            <Stack.Screen name="HelpTekno" component={HelpTekno} />
 
-          {/* Payment Flow */}
-          <Stack.Screen name="Payment" component={PaymentPage} />
-          <Stack.Screen name="PaymentSuccess" component={PaymentSuccessScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+            {/* Payment Flow */}
+            <Stack.Screen name="Payment" component={PaymentPage} />
+            <Stack.Screen name="PaymentSuccess" component={PaymentSuccessScreen} />
+
+            {/* Notification Screen */}
+            <Stack.Screen name="Notification" component={NotificationScreen} />
+
+            {/* Profile Settings Screens */}
+            <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+            <Stack.Screen name="Language" component={LanguageScreen} />
+            <Stack.Screen name="HelpCenter" component={HelpCenterScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </LanguageProvider>
     </UserProvider>
   );
 }

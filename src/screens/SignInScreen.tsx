@@ -93,7 +93,7 @@ export default function SignInScreen({ navigation }: { navigation: any }) {
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-          <Text style={styles.link}>Belum punya akun? Daftar</Text>
+          <Text style={styles.link}>Belum punya akun? Daftar Sekarang</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -102,13 +102,14 @@ export default function SignInScreen({ navigation }: { navigation: any }) {
 
 const styles = StyleSheet.create({
   container: { padding: 25, paddingBottom: 50 },
-  label: { marginTop: 10, marginBottom: 5, fontWeight: '500' },
+  label: { marginTop: 10, marginBottom: 5, fontWeight: '500', fontFamily: 'Poppins-SemiBold' },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
+    fontFamily: "Poppins-Regular"
   },
   btn: {
     backgroundColor: '#14244B',
@@ -119,11 +120,12 @@ const styles = StyleSheet.create({
   btnDisabled: {
     opacity: 0.6,
   },
-  btnText: { color: '#fff', textAlign: 'center', fontWeight: '600' },
+  btnText: { color: '#fff', textAlign: 'center', fontWeight: '600', fontFamily: "Poppins-Bold" },
   link: {
     textAlign: 'center',
     marginTop: 15,
     color: '#14244B',
     fontWeight: '600',
+    fontFamily: "Poppins-SemiBold"
   },
 });

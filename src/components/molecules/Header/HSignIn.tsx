@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Image,
 } from 'react-native';
 
 const SignInHeader = ({title}: {navigation: any; title: string}) => (
@@ -24,7 +25,7 @@ const headerStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingVertical: 15,
+    paddingVertical: 25,
     backgroundColor: '#fff',
     borderBottomWidth: 3,
     borderBottomColor: '#ccc',
@@ -36,13 +37,15 @@ const headerStyles = StyleSheet.create({
   backText: {
     color: '#455888ff',
     fontSize: 15,
+    fontFamily: 'Poppins-Regular',
   },
   headerTitle: {
+    fontFamily: 'Poppins-Bold',
     fontSize: 18,
-    fontWeight: '800',
     color: '#14244B',
-    flex: 1,
     textAlign: 'center',
+    justifyContent: 'center',
+    
   },
   placeholder: {
     flex: 1,

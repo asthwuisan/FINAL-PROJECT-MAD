@@ -5,20 +5,11 @@ import SearchIcon from '../../assets/search.png';
 const SearchBar = ({
   placeholder = 'Cari jasa yang anda perlukan',
   onChangeText,
+  style,
 }) => {
   return (
     <View
-      style={[
-        styles.container,
-        {
-          width: 360,
-          height: 36,
-          border: 20,
-          elevation: 3,
-          marginLeft: 25,
-          marginTop: 20,
-        },
-      ]}
+      style={[styles.container, style]}
     >
       <Image
         source={require('../../assets/search.png')}
