@@ -1,24 +1,20 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, Image } from 'react-native';
-import SearchIcon from '../../assets/search.png';
+
+interface SearchBarProps {
+  placeholder?: string;
+  onChangeText?: (text: string) => void;
+  style?: any;
+}
 
 const SearchBar = ({
   placeholder = 'Cari jasa yang anda perlukan',
   onChangeText,
-}) => {
+  style,
+}: SearchBarProps) => {
   return (
     <View
-      style={[
-        styles.container,
-        {
-          width: 360,
-          height: 36,
-          border: 20,
-          elevation: 3,
-          marginLeft: 25,
-          marginTop: 20,
-        },
-      ]}
+      style={[styles.container, style]}
     >
       <Image
         source={require('../../assets/search.png')}

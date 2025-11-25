@@ -8,34 +8,44 @@ import {
   ScrollView,
 } from 'react-native';
 
-import Rekom1 from '../../assets/rekom1.png';
-import Rekom2 from '../../assets/rekom2.png';
-import Rekom3 from '../../assets/rekom3.png';
-import Rekom4 from '../../assets/rekom4.png';
-import Rekom5 from '../../assets/rekom5.png';
-import Rekom6 from '../../assets/rekom6.png';
+// Note: Image assets are not available in the project
+// Using placeholder images for now
+const Rekom1 = require('../../assets/logo.png'); // Placeholder
+const Rekom2 = require('../../assets/logo.png'); // Placeholder
+const Rekom3 = require('../../assets/logo.png'); // Placeholder
+const Rekom4 = require('../../assets/logo.png'); // Placeholder
+const Rekom5 = require('../../assets/logo.png'); // Placeholder
+const Rekom6 = require('../../assets/logo.png'); // Placeholder
+import { useLanguage } from '../../context/LanguageContext';
 
-const RecommendationSection = () => {
-  const dataRekom = [
-    { image: Rekom1, title: 'AC Service', subtitle: 'Mulai dari Rp50.000' },
-    { image: Rekom2, title: 'Belajar Privat', subtitle: 'Mulai dari Rp85.000' },
-    { image: Rekom3, title: 'Kurir Express', subtitle: 'Free Antar Jemput' },
-    { image: Rekom4, title: 'Diskon 20%', subtitle: 'Promo Spesial' },
-    {
-      image: Rekom5,
-      title: 'Cleaning Service',
-      subtitle: 'Rumah Bersih Segar',
-    },
-    { image: Rekom6, title: 'Rental Mobil', subtitle: 'Mulai Rp250.000/hari' },
-  ];
+const defaultRecommendations = [
+  { image: Rekom1, title: 'AC Service', subtitle: 'Mulai dari Rp50.000' },
+  { image: Rekom2, title: 'Belajar Privat', subtitle: 'Mulai dari Rp85.000' },
+  { image: Rekom3, title: 'Kurir Express', subtitle: 'Free Antar Jemput' },
+  { image: Rekom4, title: 'Diskon 20%', subtitle: 'Promo Spesial' },
+  {
+    image: Rekom5,
+    title: 'Cleaning Service',
+    subtitle: 'Rumah Bersih Segar',
+  },
+  { image: Rekom6, title: 'Rental Mobil', subtitle: 'Mulai Rp250.000/hari' },
+];
+
+interface RecommendationSectionProps {
+  recommendations?: typeof defaultRecommendations;
+  style?: any;
+}
+
+const RecommendationSection = ({ recommendations = defaultRecommendations, style }: RecommendationSectionProps) => {
+  const { t } = useLanguage();
 
   return (
     <View style={[styles.wrapper, { marginTop: 20, marginBottom: 100 }]}>
-      <Text style={styles.heading}>Rekomendasi Untukmu</Text>
+      <Text style={styles.heading}>{t('recommendations.title')}</Text>
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.grid}>
-          {dataRekom.map((item, index) => (
+          {recommendations.map((item, index) => (
             <TouchableOpacity key={index} style={styles.card}>
               <Image source={item.image} style={styles.image} />
 
@@ -57,7 +67,7 @@ const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 10,
     marginTop: 1,
-    marginButton: 10,
+    marginBottom: 10,
   },
   heading: {
     fontSize: 18,
@@ -81,7 +91,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: 245,
-    weight: 118,
+    resizeMode: 'contain',
   },
   info: {
     padding: 10,

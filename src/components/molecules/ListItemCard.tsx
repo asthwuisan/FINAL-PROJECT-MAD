@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     width: 75,
     height: 133,
     borderRadius: 8,
-    resizeMode160: 'contain',
+    resizeMode: 'contain',
   },
 });
 

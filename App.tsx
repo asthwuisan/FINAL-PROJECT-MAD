@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Image } from 'react-native';
 import { UserProvider } from './src/context/UserContext';
+import { LanguageProvider } from './src/context/LanguageContext';
 
 // Import Screens
 import SplashScreen from './src/screens/SplashScreen';
@@ -15,6 +16,7 @@ import OrderScreen from './src/screens/OrderScreen';
 import FavoritePage from './src/screens/FavoritePage';
 import PointsPage from './src/screens/PointsPage';
 import ProfileSettingsPage from './src/screens/ProfileSettingsPage';
+import NotificationScreen from './src/screens/NotificationScreen';
 
 // Import Category Screens
 import HelpRumah from './src/screens/HelpRumah';
@@ -25,6 +27,10 @@ import HelpTekno from './src/screens/HelpTekno';
 // Import Payment Screens
 import PaymentPage from './src/screens/PaymentPage';
 import PaymentSuccessScreen from './src/screens/PaymentSuccessScreen';
+import OrderStatusScreen from './src/screens/OrderStatusScreen';
+import EditProfileScreen from './src/screens/EditProfileScreen';
+import LanguageScreen from './src/screens/LanguageScreen';
+import HelpCenterScreen from './src/screens/HelpCenterScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -82,56 +88,38 @@ function BottomTabs() {
 // ======================
 export default function App() {
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <UserProvider>
+      <LanguageProvider>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            {/* Initial Flow */}
+            <Stack.Screen name="Splash" component={SplashScreen} />
+            <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+            <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen name="SignUp" component={SignUpScreen} />
+
+            {/* Main App - Bottom Tabs */}
+            <Stack.Screen name="MainTabs" component={BottomTabs} />
+
+            {/* Category Detail Screens */}
+            <Stack.Screen name="HelpRumah" component={HelpRumah} />
+            <Stack.Screen name="HelpAntar" component={HelpAntar} />
+            <Stack.Screen name="HelpPintar" component={HelpPintar} />
+            <Stack.Screen name="HelpTekno" component={HelpTekno} />
+
+            {/* Payment Flow */}
+            <Stack.Screen name="Payment" component={PaymentPage} />
+            <Stack.Screen name="PaymentSuccess" component={PaymentSuccessScreen} />
+            <Stack.Screen name="OrderStatus" component={OrderStatusScreen} />
+
+            {/* Profile Settings Screens */}
+            <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+            <Stack.Screen name="Language" component={LanguageScreen} />
+            <Stack.Screen name="HelpCenter" component={HelpCenterScreen} />
+            <Stack.Screen name="Notification" component={NotificationScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </LanguageProvider>
+    </UserProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 23,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;

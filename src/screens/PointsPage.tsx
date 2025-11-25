@@ -4,9 +4,10 @@ import {useFocusEffect} from '@react-navigation/native';
 import PoinHeader from '../components/molecules/PoinHeader';
 import PointHistoryItem from '../components/molecules/PointHistoryItem';
 import { firebaseAuth } from '../config/firebaseConfig';
-import { getUserPointTransactions, PointTransaction } from '../utils/pointsService';
+import { getUserPointTransactions } from '../utils/pointsService';
+import { PointTransaction } from '../config/firebaseConfig';
 
-const PointsPage: React.FC = ({navigation}) => {
+const PointsPage = ({navigation}: {navigation: any}) => {
   const [transactions, setTransactions] = useState<PointTransaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);

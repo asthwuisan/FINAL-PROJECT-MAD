@@ -27,8 +27,6 @@ export default function InputSignIn({navigation}: {navigation: any}) {
   );
 }
 
-export default InputSignIn;
-
 const styles = StyleSheet.create({
   container: {padding: 25, paddingBottom: 50},
   label: {marginTop: 10, marginBottom: 5, fontWeight: '500'},

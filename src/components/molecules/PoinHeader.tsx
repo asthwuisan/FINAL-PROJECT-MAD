@@ -39,7 +39,7 @@ const PointHeader: React.FC<PointHeaderProps> = ({ refreshTrigger }) => {
       const expiring = transactions
         .filter(t => t.type === 'earned' && t.expiryDate)
         .filter(t => {
-          const expiry = t.expiryDate instanceof Date ? t.expiryDate : new Date(t.expiryDate);
+          const expiry = t.expiryDate instanceof Date ? t.expiryDate : new Date(t.expiryDate || '');
           return expiry >= now && expiry <= nextMonth;
         })
         .reduce((sum, t) => sum + t.points, 0);
@@ -47,7 +47,7 @@ const PointHeader: React.FC<PointHeaderProps> = ({ refreshTrigger }) => {
       if (expiring > 0) {
         const earliestExpiry = transactions
           .filter(t => t.type === 'earned' && t.expiryDate)
-          .map(t => t.expiryDate instanceof Date ? t.expiryDate : new Date(t.expiryDate))
+          .map(t => t.expiryDate instanceof Date ? t.expiryDate : new Date(t.expiryDate || ''))
           .filter(d => d >= now && d <= nextMonth)
           .sort((a, b) => a.getTime() - b.getTime())[0];
 

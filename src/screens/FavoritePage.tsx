@@ -19,7 +19,7 @@ interface FavoriteItem {
   createdAt: any;
 }
 
-const FavoritePage = ({navigation}) => {
+const FavoritePage = ({navigation}: {navigation: any}) => {
   const [favoriteItems, setFavoriteItems] = useState<FavoriteItem[]>([]);
   const [loading, setLoading] = useState(true);
   const currentUser = firebaseAuth.currentUser;
