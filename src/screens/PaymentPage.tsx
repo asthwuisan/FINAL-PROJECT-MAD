@@ -66,19 +66,59 @@ const PaymentPage = ({ navigation, route }: PaymentPageProps) => {
   const [receiverPhone, setReceiverPhone] = React.useState('');
   const [address, setAddress] = React.useState('');
   const [selectedPayment, setSelectedPayment] = React.useState('Transfer Bank');
+  const [selectedDate, setSelectedDate] = React.useState('');
+  const [selectedTime, setSelectedTime] = React.useState('');
   const [loading, setLoading] = React.useState(false);
 
-  // Contoh data untuk tanggal (bisa diganti dengan DatePicker di implementasi nyata)
-  const currentDate = new Date().toLocaleDateString('id-ID', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short',
-  });
+  // Generate available dates (next 7 days)
+  const generateAvailableDates = () => {
+    const dates = [];
+    const today = new Date();
+
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + i);
+
+      const dateString = date.toLocaleDateString('id-ID', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+      });
+
+      dates.push({
+        value: date.toISOString().split('T')[0], // YYYY-MM-DD format
+        display: dateString,
+      });
+    }
+
+    return dates;
+  };
+
+  // Generate available times (from 8 AM to 6 PM)
+  const generateAvailableTimes = () => {
+    const times = [];
+    for (let hour = 8; hour <= 18; hour++) {
+      const timeString = `${hour.toString().padStart(2, '0')}:00`;
+      times.push({
+        value: timeString,
+        display: `${hour}:00`,
+      });
+    }
+    return times;
+  };
+
+  const availableDates = generateAvailableDates();
+  const availableTimes = generateAvailableTimes();
 
   const handleCreateOrder = async () => {
     // Validasi
     if (!receiverName || !receiverPhone || !address) {
       Alert.alert('Lengkapi Data', 'Semua kolom wajib diisi.');
+      return;
+    }
+
+    if (!selectedDate || !selectedTime) {
+      Alert.alert('Pilih Tanggal & Waktu', 'Silakan pilih tanggal dan waktu kedatangan teknisi.');
       return;
     }
 
@@ -103,6 +143,16 @@ const PaymentPage = ({ navigation, route }: PaymentPageProps) => {
       // Generate order ID
       const orderId = `ORD-${Date.now()}`;
 
+      // Format selected date and time for display and storage
+      const selectedDateObj = new Date(selectedDate);
+      const formattedDate = selectedDateObj.toLocaleDateString('id-ID', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      });
+      const appointmentDateTime = `${formattedDate} pukul ${selectedTime}`;
+
       // Create order in Firestore
       await firebaseFirestore.collection(collections.orders).doc(orderId).set({
         orderId,
@@ -115,7 +165,9 @@ const PaymentPage = ({ navigation, route }: PaymentPageProps) => {
         receiverName: receiverName.trim(),
         receiverPhone: receiverPhone.trim(),
         address: address.trim(),
-        date: currentDate,
+        appointmentDate: selectedDate,
+        appointmentTime: selectedTime,
+        appointmentDateTime: appointmentDateTime,
         paymentMethod: selectedPayment,
         totalPrice: technicianPrice,
         status: 'pending',
@@ -130,7 +182,7 @@ const PaymentPage = ({ navigation, route }: PaymentPageProps) => {
         technicianName,
         technicianRole,
         totalPrice: technicianPrice,
-        date: currentDate,
+        appointmentDateTime: appointmentDateTime,
         paymentMethod: selectedPayment,
       });
     } catch (error) {
@@ -202,13 +254,56 @@ const PaymentPage = ({ navigation, route }: PaymentPageProps) => {
           />
         </View>
 
-        {/* Bagian 3: Tanggal */}
+        {/* Bagian 3: Tanggal & Waktu */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Tanggal</Text>
-          <View style={styles.dateRow}>
-            <Text style={styles.dateText}>{currentDate}</Text>
-            {/* Ikon kalender di sini (contoh) */}
-            <Text style={styles.calendarIcon}>🗓️</Text>
+          <Text style={styles.sectionTitle}>Tanggal & Waktu Kedatangan</Text>
+
+          {/* Date Selection */}
+          <View style={styles.subSection}>
+            <Text style={styles.subSectionTitle}>Pilih Tanggal</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.dateScroll}>
+              {availableDates.map((dateOption) => (
+                <TouchableOpacity
+                  key={dateOption.value}
+                  style={[
+                    styles.dateOption,
+                    selectedDate === dateOption.value && styles.dateOptionSelected,
+                  ]}
+                  onPress={() => setSelectedDate(dateOption.value)}
+                >
+                  <Text style={[
+                    styles.dateOptionText,
+                    selectedDate === dateOption.value && styles.dateOptionTextSelected,
+                  ]}>
+                    {dateOption.display}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+
+          {/* Time Selection */}
+          <View style={styles.subSection}>
+            <Text style={styles.subSectionTitle}>Pilih Waktu</Text>
+            <View style={styles.timeGrid}>
+              {availableTimes.map((timeOption) => (
+                <TouchableOpacity
+                  key={timeOption.value}
+                  style={[
+                    styles.timeOption,
+                    selectedTime === timeOption.value && styles.timeOptionSelected,
+                  ]}
+                  onPress={() => setSelectedTime(timeOption.value)}
+                >
+                  <Text style={[
+                    styles.timeOptionText,
+                    selectedTime === timeOption.value && styles.timeOptionTextSelected,
+                  ]}>
+                    {timeOption.display}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
         </View>
 
@@ -325,23 +420,71 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
 
-  // Date Row
-  dateRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  // Date & Time Selection
+  subSection: {
+    marginBottom: 16,
+  },
+  subSectionTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1B2559',
+    marginBottom: 8,
+  },
+  dateScroll: {
+    marginBottom: 8,
+  },
+  dateOption: {
     backgroundColor: 'white',
     borderRadius: 8,
-    padding: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    marginRight: 8,
     borderWidth: 1,
     borderColor: '#E2E8F0',
+    minWidth: 100,
+    alignItems: 'center',
   },
-  dateText: {
+  dateOptionSelected: {
+    backgroundColor: '#E3F2FD',
+    borderColor: '#2196F3',
+  },
+  dateOptionText: {
     fontSize: 14,
     color: '#1B2559',
+    fontWeight: '500',
   },
-  calendarIcon: {
-    fontSize: 20,
+  dateOptionTextSelected: {
+    color: '#2196F3',
+    fontWeight: '600',
+  },
+  timeGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  timeOption: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    width: '30%',
+    alignItems: 'center',
+  },
+  timeOptionSelected: {
+    backgroundColor: '#E3F2FD',
+    borderColor: '#2196F3',
+  },
+  timeOptionText: {
+    fontSize: 14,
+    color: '#1B2559',
+    fontWeight: '500',
+  },
+  timeOptionTextSelected: {
+    color: '#2196F3',
+    fontWeight: '600',
   },
 
   // Card Informasi Teknisi (Diambil dari OrderCard)
