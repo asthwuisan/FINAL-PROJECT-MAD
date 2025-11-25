@@ -1,0 +1,63 @@
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
+
+const SignUpHeader = ({
+  navigation,
+  title,
+}: {
+  navigation: any;
+  title: string;
+}) => (
+  <View style={headerStyles.headerContainer}>
+    <TouchableOpacity
+      onPress={() => navigation.goBack()}
+      style={headerStyles.backButton}>
+      <Text style={headerStyles.backText}>{'Kembali'}</Text>
+    </TouchableOpacity>
+
+    <Text style={headerStyles.headerTitle}>{title}</Text>
+
+    <View style={headerStyles.placeholder} />
+  </View>
+);
+
+export default SignUpHeader;
+
+const headerStyles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    backgroundColor: '#fff',
+    borderBottomWidth: 3,
+    borderBottomColor: '#ccc',
+  },
+  backButton: {
+    flex: 1,
+    alignItems: 'flex-start',
+  },
+  backText: {
+    color: '#455888ff',
+    fontSize: 15,
+    fontFamily: "Poppins-Medium"
+  },
+  headerTitle: {
+    fontSize: 18,
+    color: '#14244B',
+    flex: 1,
+    textAlign: 'center',
+    fontFamily: 'Poppins-Bold',
+  },
+  placeholder: {
+    flex: 1,
+  },
+});
